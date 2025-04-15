@@ -7,7 +7,7 @@ class LlmService {
         this.baseUrl = 'https://api.openai.com/v1/chat/completions';
     }
 
-    async sendMessage(messages: { role: string; content: string }[]): Promise<any> {
+    private async sendMessage(messages: { role: string; content: string }[]): Promise<unknown> {
         const apiKey = localStorage.getItem('llm_api_key');
         const model = localStorage.getItem('llm_model');
 
@@ -38,6 +38,16 @@ class LlmService {
             console.error('Error communicating with OpenAI API:', error);
             throw error;
         }
+    }
+
+    public async sendUserMessage(message: string): Promise<unknown> {
+        const messages = [
+            {
+                role: 'user',
+                content: message,
+            },
+        ];
+        return this.sendMessage(messages);
     }
 }
 
