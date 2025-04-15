@@ -1,5 +1,6 @@
 <script setup lang="ts">
     import QuestionKind from '@/enums/QuestionKind';
+    import { ExamQuestion } from '@/types/Exam';
     import { ref } from 'vue';
     import QuestionCheckboxGroup from './QuestionCheckboxGroup.vue';
     import QuestionDropdown from './QuestionDropdown.vue';
@@ -7,7 +8,7 @@
     import QuestionTextbox from './QuestionTextbox.vue';
 
     const props = defineProps<{
-        questionKind: QuestionKind;
+        question: ExamQuestion;
     }>();
 
     const kindsComponents = ref(
@@ -21,5 +22,8 @@
 </script>
 
 <template>
-    <div><component :is="kindsComponents.get(questionKind)"></component></div>
+    <div>
+        <h2 class="pb-2">{{ question.text }}</h2>
+        <component :is="kindsComponents.get(question.kind)" :options="question.options" />
+    </div>
 </template>
