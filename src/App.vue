@@ -6,7 +6,7 @@
 <template>
     <div id="app">
         <div class="space-y-8 mx-auto p-4 container">
-            <AppQuestion :question-kind="QuestionKind.Text" />
+            <AppQuestion :question-kind="QuestionKind.Dropdown" />
         </div>
     </div>
 </template>
