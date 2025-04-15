@@ -13,7 +13,8 @@ interface Exam {
 interface ExamQuestion {
     kind: QuestionKind;
     text: string;
-    options?: string[];
+    answerRows?: number; // for text questions
+    options?: string[]; // for multiple choice questions
     answer?: string | string[];
     markingComments?: string;
 }

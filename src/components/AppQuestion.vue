@@ -24,6 +24,11 @@
 <template>
     <div>
         <h2 class="pb-2">{{ question.text }}</h2>
-        <component :is="kindsComponents.get(question.kind)" :options="question.options" />
+        <component
+            :is="kindsComponents.get(question.kind)"
+            placeholder="Enter your answer..."
+            :rows="question.answerRows"
+            :options="question.options"
+        />
     </div>
 </template>

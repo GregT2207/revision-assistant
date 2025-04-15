@@ -11,6 +11,7 @@ Exam {
 ExamQuestion {
     kind: 'text' | 'radio' | 'checkbox'; // best format to present the question with on an HTML page
     text: string; // question being asked
+    answerRows?: number; // number of rows for the answer text box (applicable only for text questions)
     options?: string[]; // array of potential responses (applicable only for radio and checkbox)
 }
 
