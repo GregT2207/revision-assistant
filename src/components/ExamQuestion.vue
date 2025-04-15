@@ -23,7 +23,9 @@
 
 <template>
     <div>
-        <h2 class="pb-2">{{ question.text }}</h2>
+        <h2>{{ question.text }}</h2>
+        <p class="mb-2 text-gray-400 text-xs">{{ question.maxMarks }} mark{{ question.maxMarks > 1 ? 's' : '' }}</p>
+
         <component
             :is="kindsComponents.get(question.kind)"
             placeholder="Enter your answer..."

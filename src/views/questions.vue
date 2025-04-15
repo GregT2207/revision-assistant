@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import AppQuestion from '@/components/AppQuestion.vue';
+    import AppQuestion from '@/components/ExamQuestion.vue';
     import Exam from '@/types/Exam';
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
@@ -34,6 +34,17 @@
 
 <template>
     <div v-if="exam" class="space-y-8 p-16">
+        <div>
+            <h1 class="mb-2 font-bold text-4xl text-center">{{ exam.title }}</h1>
+            <p class="text-gray-500 text-center">{{ exam.description }}</p>
+        </div>
+
+        <div>
+            <p class="text-light-300 text-center">{{ exam.maxDuration }} minutes</p>
+            <p class="text-light-300 text-center">{{ exam.questions.length }} questions</p>
+            <p class="text-light-300 text-center">{{ exam.maxMarks }} marks</p>
+        </div>
+
         <AppQuestion v-for="question in exam.questions" :question="question" />
     </div>
 
