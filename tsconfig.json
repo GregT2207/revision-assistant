@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "lib": ["ESNext", "DOM", "DOM.Iterable", "ScriptHost"],
+        "skipLibCheck": true,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "isolatedModules": false,
+        "strict": true,
+        "jsx": "preserve",
+        "sourceMap": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        },
+        "types": ["vite/client"]
+    },
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"],
+    "exclude": ["node_modules"]
+}
