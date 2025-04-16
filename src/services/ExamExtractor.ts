@@ -1,3 +1,4 @@
+import QuestionKind from '@/enums/QuestionKind';
 import extractExamDataPrompt from '@/prompts/extract-exam-data/prompt.json';
 import responseSchema from '@/prompts/extract-exam-data/response-schema.json';
 import Exam from '@/types/Exam';
@@ -19,6 +20,9 @@ class ExamExtractor {
         let exam: Exam;
         try {
             exam = JSON.parse(llmResponse);
+            for (const question of exam.questions) {
+                question.answer = question.kind === QuestionKind.Checkbox ? [] : '';
+            }
         } catch (error) {
             console.error('Error parsing LLM response:', error, llmResponse);
             return null;

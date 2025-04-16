@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import QuestionKind from '@/enums/QuestionKind';
     import { ExamQuestion } from '@/types/Exam';
-    import { ref } from 'vue';
+    import { shallowRef } from 'vue';
     import QuestionCheckboxGroup from './QuestionCheckboxGroup.vue';
     import QuestionDropdown from './QuestionDropdown.vue';
     import QuestionRadioGroup from './QuestionRadioGroup.vue';
@@ -11,7 +11,9 @@
         question: ExamQuestion;
     }>();
 
-    const kindsComponents = ref(
+    const value = defineModel<string | string[]>();
+
+    const kindsComponents = shallowRef(
         new Map<QuestionKind, unknown>([
             [QuestionKind.Text, QuestionTextbox],
             [QuestionKind.Checkbox, QuestionCheckboxGroup],
@@ -28,6 +30,7 @@
 
         <component
             :is="kindsComponents.get(question.kind)"
+            v-model="value"
             placeholder="Enter your answer..."
             :rows="question.answerRows"
             :options="question.options"
