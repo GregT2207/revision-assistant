@@ -31,6 +31,16 @@
         localStorage.setItem('llm_model', model.value);
     };
 
+    const getExams = () => {
+        let exams: Exam[];
+        try {
+            exams = JSON.parse(localStorage.getItem('exams') as string) || [];
+        } catch (error: unknown) {
+            exams = [];
+        }
+        return exams;
+    };
+
     const storeNewExam = async () => {
         if (!uploadedExam.value) {
             console.error('No exam uploaded');
@@ -39,12 +49,7 @@
 
         loading.value = true;
 
-        let exams: Exam[];
-        try {
-            exams = JSON.parse(localStorage.getItem('exams') as string) || [];
-        } catch (error: unknown) {
-            exams = [];
-        }
+        const exams = getExams();
 
         try {
             const newExam = await examExtractor.extractExamQuestions(uploadedExam.value);
@@ -81,7 +86,7 @@
                 <input
                     v-model="apiKey"
                     type="password"
-                    class="bg-gray-700 px-3 py-2 border border-green-500 focus:border-green-500 rounded focus:outline-none w-full text-light-100 placeholder-green-500"
+                    class="bg-gray-700 px-3 py-2 border border-orange-500 focus:border-orange-500 rounded focus:outline-none w-full text-light-100 placeholder-orange-500"
                     placeholder="sk-something"
                 />
             </div>
@@ -102,15 +107,26 @@
                 />
             </div>
 
-            <div class="flex flex-col gap-4 col-span-2 mt-8">
+            <div class="flex flex-col gap-4 col-span-2 mt-4">
                 <button
-                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-light-100 transition duration-200"
+                    class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-light-100 transition duration-200"
                     :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
                     :disabled="loading"
                     @click="storeNewExam"
                 >
                     {{ loading ? 'Extracting exam questions...' : 'Extract exam questions' }}
                 </button>
+            </div>
+
+            <div class="flex flex-col gap-4 col-span-2 mt-32">
+                <router-link
+                    v-for="exam in getExams()"
+                    :key="exam.title"
+                    :to="{ name: 'questions', params: { title: exam.title } }"
+                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-light-100 transition duration-200"
+                >
+                    {{ exam.title }}
+                </router-link>
             </div>
         </div>
     </div>
