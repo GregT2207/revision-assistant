@@ -1,18 +1,24 @@
-import extractExamDataPrompt from '@/prompts/extract-exam-data.txt';
+import extractExamDataPrompt from '@/prompts/extract-exam-data/prompt.json';
+import responseSchema from '@/prompts/extract-exam-data/response-schema.json';
 import Exam from '@/types/Exam';
 import llmService from './LlmService';
 
 class ExamExtractor {
-    async extractExamQuestions(): Promise<Exam | null> {
-        if (!extractExamDataPrompt) {
+    async extractExamQuestions(file: File): Promise<Exam | null> {
+        if (!extractExamDataPrompt || !extractExamDataPrompt.data) {
             console.error('Prompt for extracting exam data is not available.');
             return null;
         }
 
-        const llmResponse: unknown = llmService.sendUserMessage(extractExamDataPrompt);
+        if (!responseSchema || !responseSchema) {
+            console.error('Response schema for extracting exam data is not available.');
+            return null;
+        }
+
+        const llmResponse = await llmService.sendUserMessage(extractExamDataPrompt.data, responseSchema, file);
         let exam: Exam;
         try {
-            exam = JSON.parse(llmResponse as string);
+            exam = JSON.parse(llmResponse);
         } catch (error) {
             console.error('Error parsing LLM response:', error, llmResponse);
             return null;

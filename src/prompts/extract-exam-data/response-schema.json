@@ -1,0 +1,68 @@
+{
+    "name": "Exam",
+    "description": "Exam data extracted from a PDF file",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": ["string"],
+                "description": "Title of the exam paper. (\"No title\" if not stated)."
+            },
+            "description": {
+                "type": ["string"],
+                "description": "Description of the exam paper. (\"No description\" if not stated)."
+            },
+            "maxDuration": {
+                "type": ["number"],
+                "description": "Maximum allowed duration of the exam in minutes (0 if not stated)."
+            },
+            "maxMarks": {
+                "type": ["number"],
+                "description": "Maximum number of marks that can be awarded. (0 if not stated)."
+            },
+            "questions": {
+                "type": ["array"],
+                "description": "Array of all questions that the exam paper asks.",
+                "items": {
+                    "$ref": "#/definitions/ExamQuestion"
+                }
+            }
+        },
+        "additionalProperties": false,
+        "required": ["title", "description", "maxDuration", "maxMarks", "questions"],
+        "definitions": {
+            "ExamQuestion": {
+                "type": "object",
+                "properties": {
+                    "kind": {
+                        "type": ["string"],
+                        "enum": ["text", "radio", "checkbox"],
+                        "description": "Best format to present the question on an HTML page."
+                    },
+                    "text": {
+                        "type": ["string"],
+                        "description": "The question being asked."
+                    },
+                    "maxMarks": {
+                        "type": ["number"],
+                        "description": "Maximum number of marks that can be awarded for this question (0 if not stated)."
+                    },
+                    "answerRows": {
+                        "type": ["number", "null"],
+                        "description": "Number of rows for the answer text box (applicable only for text questions)."
+                    },
+                    "options": {
+                        "type": ["array", "null"],
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Array of potential responses (applicable only for radio and checkbox questions)."
+                    }
+                },
+                "required": ["kind", "text", "maxMarks", "answerRows", "options"],
+                "additionalProperties": false
+            }
+        }
+    }
+}

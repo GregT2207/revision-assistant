@@ -1,22 +1,44 @@
 <script setup lang="ts">
     import QuestionDropdown from '@/components/QuestionDropdown.vue';
+    import examExtractor from '@/services/ExamExtractor';
     import Exam from '@/types/Exam';
-    import { ref } from 'vue';
+    import { onMounted, ref, watch } from 'vue';
+    import { useRouter } from 'vue-router';
 
-    const examPaper = ref<File | null>(null);
+    const router = useRouter();
+    const apiKey = ref<string>('');
+    const model = ref<string>('gpt-4o');
+    const uploadedExam = ref<File | null>(null);
+    const loading = ref(false);
 
-    const setApiKey = (e: Event) => {
-        const input = e.target as HTMLInputElement;
-        const apiKey = input.value;
+    onMounted(() => {
+        if (localStorage.getItem('llm_api_key')) {
+            apiKey.value = localStorage.getItem('llm_api_key') as string;
+        }
 
-        localStorage.setItem('llm_api_key', apiKey);
+        if (localStorage.getItem('llm_model')) {
+            model.value = localStorage.getItem('llm_model') as string;
+        } else {
+            setModel();
+        }
+    });
+
+    const setApiKey = () => {
+        localStorage.setItem('llm_api_key', apiKey.value);
     };
 
-    const setModel = (model: string) => {
-        localStorage.setItem('llm_model', model);
+    const setModel = () => {
+        localStorage.setItem('llm_model', model.value);
     };
 
-    const extractExamQuestions = async () => {
+    const storeNewExam = async () => {
+        if (!uploadedExam.value) {
+            console.error('No exam uploaded');
+            return;
+        }
+
+        loading.value = true;
+
         let exams: Exam[];
         try {
             exams = JSON.parse(localStorage.getItem('exams') as string) || [];
@@ -24,10 +46,31 @@
             exams = [];
         }
 
-        // exams.push(JSON.parse());
+        try {
+            const newExam = await examExtractor.extractExamQuestions(uploadedExam.value);
+            if (!newExam) {
+                throw new Error('Failed to extract questions from uploaded exam');
+            }
 
-        localStorage.setItem('exams', JSON.stringify(exams));
+            exams.push(newExam);
+            localStorage.setItem('exams', JSON.stringify(exams));
+
+            await router.push({
+                name: 'questions',
+                params: {
+                    title: newExam.title,
+                },
+            });
+            return;
+        } catch (error: unknown) {
+            console.error('Error storing new exam:', error);
+        } finally {
+            loading.value = false;
+        }
     };
+
+    watch(apiKey, () => setApiKey());
+    watch(model, () => setModel());
 </script>
 
 <template>
@@ -36,20 +79,16 @@
             <div class="flex flex-col gap-4">
                 <p>OpenAI API Key</p>
                 <input
+                    v-model="apiKey"
                     type="password"
                     class="bg-gray-700 px-3 py-2 border border-green-500 focus:border-green-500 rounded focus:outline-none w-full text-light-100 placeholder-green-500"
                     placeholder="sk-something"
-                    @change="setApiKey"
                 />
             </div>
 
             <div class="flex flex-col gap-4">
                 <p>Model</p>
-                <QuestionDropdown
-                    :model-value="'GPT-4o'"
-                    :options="['GPT-4o', 'GPT-4', 'GPT-3.5']"
-                    @change="setModel"
-                />
+                <QuestionDropdown v-model="model" :options="['gpt-4o', 'gpt-4o-mini', 'o1']" />
             </div>
 
             <div class="flex flex-col gap-4 col-span-2">
@@ -59,15 +98,18 @@
                     class="bg-gray-700 px-3 py-2 border border-red-500 focus:border-red-500 rounded focus:outline-none w-full text-light-100 placeholder-green-500"
                     accept=".pdf"
                     placeholder="Upload PDF"
+                    @change="(e: Event) => (uploadedExam = (e.target as HTMLInputElement).files?.[0] || null)"
                 />
             </div>
 
             <div class="flex flex-col gap-4 col-span-2 mt-8">
                 <button
                     class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-light-100 transition duration-200"
-                    @click="extractExamQuestions"
+                    :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
+                    :disabled="loading"
+                    @click="storeNewExam"
                 >
-                    Extract exam questions
+                    {{ loading ? 'Extracting exam questions...' : 'Extract exam questions' }}
                 </button>
             </div>
         </div>
