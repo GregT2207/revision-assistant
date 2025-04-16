@@ -6,9 +6,9 @@ Revision Assistant is a browser-only app written with Vue that uses an LLM (curr
 
 ### Important notes
 
--   Exams (including answers and marks) as well as API keys are stored in local storage in your browser, nothing is saved on a server \
--   The LLM is communicated with directly from your browser \
--   Never reveal your API keys to anyone else \
+-   Exams (including answers and marks) as well as API keys are stored in local storage in your browser, nothing is saved on a server
+-   The LLM is communicated with directly from your browser
+-   Never reveal your API keys to anyone else
 -   This is a powerful study tool, but **please remember that the code here could fail you (always back up your data yourself) and that LLMs can always be wrong or misleading (independently verify any information it gives you)!**
 
 ### Future improvements
