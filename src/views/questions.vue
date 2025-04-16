@@ -4,11 +4,13 @@
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
 
+    const saveEverySeconds = 3;
     const route = useRoute();
     const exam = ref<Exam | null>(null);
 
     onMounted(() => {
         getExam();
+        setInterval(saveExam, saveEverySeconds * 1000);
     });
 
     const getExam = () => {
