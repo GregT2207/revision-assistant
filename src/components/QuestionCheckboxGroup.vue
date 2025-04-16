@@ -5,7 +5,7 @@
         options: string[];
     }>();
 
-    const checked = ref<string[]>([]);
+    const value = ref<string[]>([]);
 </script>
 
 <template>
@@ -14,7 +14,7 @@
             <input
                 type="checkbox"
                 :value="option"
-                v-model="checked"
+                v-model="value"
                 class="border border-blue-500 rounded focus:outline-none focus:ring focus:ring-blue-500 accent-blue-500"
             />
             <span class="text-blue-500">{{ option }}</span>

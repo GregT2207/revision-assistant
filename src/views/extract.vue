@@ -45,7 +45,11 @@
 
             <div class="flex flex-col gap-4">
                 <p>Model</p>
-                <QuestionDropdown :options="['GPT-3.5', 'GPT-4']" @change="setModel" />
+                <QuestionDropdown
+                    :model-value="'GPT-4o'"
+                    :options="['GPT-4o', 'GPT-4', 'GPT-3.5']"
+                    @change="setModel"
+                />
             </div>
 
             <div class="flex flex-col gap-4 col-span-2">

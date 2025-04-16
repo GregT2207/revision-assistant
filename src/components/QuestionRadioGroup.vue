@@ -5,7 +5,7 @@
         options: string[];
     }>();
 
-    const selected = ref(null);
+    const value = defineModel();
 </script>
 
 <template>
@@ -14,7 +14,7 @@
             <input
                 type="radio"
                 :value="option"
-                v-model="selected"
+                v-model="value"
                 name="radio-group"
                 class="border border-red-500 rounded-full focus:outline-none focus:ring focus:ring-red-500 accent-red-500"
             />

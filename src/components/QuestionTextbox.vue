@@ -3,6 +3,8 @@
         placeholder?: string;
         rows?: number;
     }>();
+
+    const value = defineModel();
 </script>
 
 <template>
