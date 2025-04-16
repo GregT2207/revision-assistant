@@ -88,7 +88,7 @@ class LlmService {
         }
     }
 
-    public async sendUserMessage(message: string, schema: ResponseSchema, file?: File): Promise<string> {
+    public async sendUserMessage(message: string, schema: ResponseSchema, file?: File | null): Promise<string> {
         const contents: Content[] = [
             {
                 type: 'text',

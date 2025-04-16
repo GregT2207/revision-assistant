@@ -1,0 +1,44 @@
+{
+    "name": "markedExam",
+    "description": "Completed exam paper that has been marked",
+    "strict": true,
+    "schema": {
+        "type": "object",
+        "properties": {
+            "questions": {
+                "type": ["array"],
+                "description": "Array of all questions that the exam paper asks.",
+                "items": {
+                    "$ref": "#/definitions/ExamQuestion"
+                }
+            },
+            "marksAwarded": {
+                "type": "number",
+                "description": "The total number of marks awarded for the paper. This should be the sum of marks awarded for each question, unless there's an explicit reason to adjust it."
+            },
+            "markingComments": {
+                "type": "string",
+                "description": "General comments from the perspective of the examiner about the answers given in the paper"
+            }
+        },
+        "additionalProperties": false,
+        "required": ["questions", "marksAwarded", "markingComments"],
+        "definitions": {
+            "ExamQuestion": {
+                "type": "object",
+                "properties": {
+                    "marksAwarded": {
+                        "type": "number",
+                        "description": "The total number of marks awarded for this question specifically. This should not exceed the total marks available for this question specifically."
+                    },
+                    "markingComments": {
+                        "type": "string",
+                        "description": "Comments from the perspective of the examiner about the answer given for this question specifically."
+                    }
+                },
+                "required": ["marksAwarded", "markingComments"],
+                "additionalProperties": false
+            }
+        }
+    }
+}

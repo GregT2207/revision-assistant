@@ -3,7 +3,7 @@
         options: string[];
     }>();
 
-    const value = defineModel<string[]>();
+    const value = defineModel<string>();
 </script>
 
 <template>
