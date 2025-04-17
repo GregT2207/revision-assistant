@@ -5,10 +5,10 @@
     import QuestionTextbox from '@/components/QuestionTextbox.vue';
     import examMarker from '@/services/ExamMarker';
     import Exam from '@/types/Exam';
+    import debounce from 'lodash/debounce';
     import { onMounted, ref } from 'vue';
     import { useRoute, useRouter } from 'vue-router';
 
-    const saveEverySeconds = 3;
     const route = useRoute();
     const router = useRouter();
     const exam = ref<Exam | null>(null);
@@ -19,7 +19,6 @@
 
     onMounted(() => {
         getExam();
-        setInterval(saveExam, saveEverySeconds * 1000);
     });
 
     const getExam = () => {
@@ -53,6 +52,8 @@
 
         localStorage.setItem('exams', JSON.stringify(exams));
     };
+
+    const debouncedSaveExam = debounce(saveExam, 1000);
 
     const markExam = async () => {
         if (!exam.value) {
@@ -94,7 +95,12 @@
         </div>
 
         <ExamDetails :exam="exam" />
-        <ExamQuestion v-for="question in exam.questions" v-model="question.answer" :question="question" />
+        <ExamQuestion
+            v-for="question in exam.questions"
+            v-model="question.answer"
+            :question="question"
+            @change="debouncedSaveExam"
+        />
 
         <!-- mark exam modal -->
         <div
