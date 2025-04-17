@@ -29,7 +29,7 @@
                 "properties": {
                     "correctAnswer": {
                         "type": ["string", "null"],
-                        "description": "The correct answer to the question. This should be the actual text value of the answer, not the arbitrary label such as 1 or C. This is only applicable for questions with a single, objectively correct answer (e.g. radio questions)."
+                        "description": "The correct answer to the question. This is only applicable for questions with a single, objectively correct answer (e.g. radio questions)."
                     },
                     "marksAwarded": {
                         "type": "number",
