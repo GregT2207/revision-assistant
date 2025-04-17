@@ -4,6 +4,7 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    base: '/revision-assistant/',
     plugins: [vue(), tailwindcss()],
     resolve: {
         alias: {
