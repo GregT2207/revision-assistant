@@ -18,6 +18,7 @@ interface ExamQuestion extends Markable {
     answerRows?: number; // for text questions
     options?: string[]; // for multiple choice questions
     answer?: string | string[];
+    correctAnswer?: string | string[];
 }
 
 interface Markable {

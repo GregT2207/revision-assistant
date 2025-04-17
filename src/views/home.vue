@@ -122,8 +122,12 @@
                 <router-link
                     v-for="exam in getExams()"
                     :key="exam.title"
-                    :to="{ name: 'questions', params: { title: exam.title } }"
-                    class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-light-100 transition duration-200"
+                    :to="{ name: exam.marked ? 'marking' : 'questions', params: { title: exam.title } }"
+                    class="px-4 py-2 rounded text-light-100 transition duration-200"
+                    :class="{
+                        'bg-red-500 hover:bg-red-600': exam.marked,
+                        'bg-blue-500 hover:bg-blue-600': !exam.marked,
+                    }"
                 >
                     {{ exam.title }}
                 </router-link>

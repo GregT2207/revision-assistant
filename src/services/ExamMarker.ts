@@ -34,7 +34,20 @@ class ExamMarker {
         let markedExam: Exam;
         try {
             markedExam = JSON.parse(llmResponse);
+
+            exam.questions = exam.questions.map((question, index) => {
+                const markedQuestion = markedExam.questions[index];
+                if (markedQuestion) {
+                    question.marksAwarded = markedQuestion.marksAwarded;
+                    question.markingComments = markedQuestion.markingComments;
+                    question.correctAnswer = markedQuestion.correctAnswer;
+                }
+
+                return question;
+            });
             exam = { ...exam, ...markedExam };
+
+            exam.marked = true;
         } catch (error) {
             console.error('Error parsing LLM response:', error, llmResponse);
             return null;

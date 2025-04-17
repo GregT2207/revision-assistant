@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import ExamDetails from '@/components/ExamDetails.vue';
+    import ExamNotFound from '@/components/ExamNotFound.vue';
     import ExamQuestion from '@/components/ExamQuestion.vue';
     import QuestionTextbox from '@/components/QuestionTextbox.vue';
     import examMarker from '@/services/ExamMarker';
@@ -13,6 +15,7 @@
     const uploadedMarkScheme = ref<File | null>(null);
     const markGuidelines = ref<string>('');
     const showMarkExamModal = ref(false);
+    const marking = ref(false);
 
     onMounted(() => {
         getExam();
@@ -57,6 +60,7 @@
             return;
         }
 
+        marking.value = true;
         saveExam();
         exam.value = await examMarker.markExamAnswers(exam.value, uploadedMarkScheme.value, markGuidelines.value);
         saveExam();
@@ -89,17 +93,7 @@
             </button>
         </div>
 
-        <div>
-            <h1 class="mb-2 font-bold text-4xl text-center">{{ exam.title }}</h1>
-            <p class="text-gray-500 text-center">{{ exam.description }}</p>
-        </div>
-
-        <div>
-            <p class="text-light-300 text-center">{{ exam.maxDuration }} minutes</p>
-            <p class="text-light-300 text-center">{{ exam.questions.length }} questions</p>
-            <p class="text-light-300 text-center">{{ exam.maxMarks }} marks</p>
-        </div>
-
+        <ExamDetails :exam="exam" />
         <ExamQuestion v-for="question in exam.questions" v-model="question.answer" :question="question" />
 
         <!-- mark exam modal -->
@@ -142,6 +136,8 @@
                     <button
                         type="button"
                         class="bg-green-500 px-4 py-2 rounded w-full text-white cursor-pointer"
+                        :class="marking ? 'opacity-50 cursor-not-allowed' : ''"
+                        :disabled="marking"
                         @click="markExam"
                     >
                         My answers are final, mark my exam
@@ -151,8 +147,5 @@
         </div>
     </form>
 
-    <div v-else>
-        <h1>Exam not found</h1>
-        <p>The exam you are looking for does not exist.</p>
-    </div>
+    <ExamNotFound v-else class="mt-16" />
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+    import ExamDetails from '@/components/ExamDetails.vue';
+    import ExamNotFound from '@/components/ExamNotFound.vue';
     import Exam from '@/types/Exam';
     import { onMounted, ref } from 'vue';
     import { useRoute } from 'vue-router';
@@ -27,5 +29,15 @@
 </script>
 
 <template>
-    {{ exam }}
+    <div v-if="exam" class="space-y-8 p-16">
+        <ExamDetails :exam="exam" />
+        <p>{{ exam.marksAwarded }} / {{ exam.maxMarks }}</p>
+        <p>{{ Math.round(((exam.marksAwarded ?? 0) / exam.maxMarks) * 100) }}%</p>
+
+        <div v-for="question in exam.questions" class="space-y-4">
+            {{ question }}
+        </div>
+    </div>
+
+    <ExamNotFound v-else class="mt-16" />
 </template>
