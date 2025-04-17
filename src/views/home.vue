@@ -123,7 +123,7 @@
         <div
             class="card-group sm:flex *:not-last:border-e *:not-last:border-base-content/25 sm:max-w-full max-w-sm sm:max-h-128 overflow-x-auto"
         >
-            <div v-for="exam in getExams()" :key="exam.title" class="min-w-80 card">
+            <div v-for="exam in getExams()" :key="exam.title" class="min-w-80 max-w-100 card">
                 <div class="card-body">
                     <h2 class="mb-2 h-32 overflow-y-auto card-title">{{ exam.title }}</h2>
                     <p class="mb-4 h-64 overflow-y-auto">{{ exam.description }}</p>
