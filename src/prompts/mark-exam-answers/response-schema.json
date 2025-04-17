@@ -36,8 +36,8 @@
                         "description": "The total number of marks awarded for this question specifically. This should not exceed the total marks available for this question specifically."
                     },
                     "markingComments": {
-                        "type": "string",
-                        "description": "Comments from the perspective of the examiner about the answer given for this question specifically."
+                        "type": ["string", "null"],
+                        "description": "Comments from the perspective of the examiner about the answer given for this question specifically. Leave this field blank if there is nothing significant to remark upon."
                     }
                 },
                 "required": ["correctAnswer", "marksAwarded", "markingComments"],
