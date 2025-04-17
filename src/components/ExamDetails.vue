@@ -5,16 +5,16 @@
 </script>
 
 <template>
-    <div class="space-y-4">
-        <div>
-            <h1 class="mb-2 font-bold text-4xl text-center">{{ exam.title }}</h1>
+    <div class="flex space-x-4">
+        <div class="bg-base-100 p-8 rounded-lg w-full">
+            <h1 class="mb-2 font-bold text-2xl text-center">{{ exam.title }}</h1>
             <p class="text-gray-500 text-center">{{ exam.description }}</p>
         </div>
 
-        <div>
-            <p class="text-light-300 text-center">{{ exam.maxDuration }} minutes</p>
-            <p class="text-light-300 text-center">{{ exam.questions.length }} questions</p>
-            <p class="text-light-300 text-center">{{ exam.maxMarks }} marks</p>
+        <div class="flex flex-col justify-center items-center space-y-4 bg-base-100 p-8 rounded-lg w-full">
+            <p class="text-4xl text-center">{{ exam.maxDuration }} minutes</p>
+            <p class="text-4xl text-center">{{ exam.questions.length }} questions</p>
+            <p class="text-4xl text-center">{{ exam.maxMarks }} marks</p>
         </div>
     </div>
 </template>

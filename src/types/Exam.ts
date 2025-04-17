@@ -4,7 +4,6 @@ interface Exam extends Markable {
     title: string;
     description: string;
     maxDuration: number; // minutes
-    maxMarks: number;
     questions: ExamQuestion[];
     marked: boolean;
     marksAwarded?: number;
@@ -14,7 +13,6 @@ interface Exam extends Markable {
 interface ExamQuestion extends Markable {
     kind: QuestionKind;
     text: string;
-    maxMarks: number;
     answerRows?: number; // for text questions
     options?: string[]; // for multiple choice questions
     answer?: string | string[];
@@ -22,9 +20,10 @@ interface ExamQuestion extends Markable {
 }
 
 interface Markable {
+    maxMarks: number;
     marksAwarded?: number;
     markingComments?: string;
 }
 
 export default Exam;
-export { ExamQuestion };
+export { ExamQuestion, Markable };
