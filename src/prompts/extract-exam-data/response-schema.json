@@ -42,7 +42,7 @@
                     },
                     "text": {
                         "type": "string",
-                        "description": "The question being asked."
+                        "description": "The question being asked. Keep the formatting tidy and readable, don't include information already recorded in other fields (e.g. marks, options)."
                     },
                     "maxMarks": {
                         "type": "number",
