@@ -1,8 +1,8 @@
 <script setup lang="ts">
+    import AppTextbox from '@/components/AppTextbox.vue';
     import ExamDetails from '@/components/ExamDetails.vue';
     import ExamNotFound from '@/components/ExamNotFound.vue';
     import ExamQuestion from '@/components/ExamQuestion.vue';
-    import QuestionTextbox from '@/components/QuestionTextbox.vue';
     import examMarker from '@/services/ExamMarker';
     import Exam from '@/types/Exam';
     import debounce from 'lodash/debounce';
@@ -128,7 +128,7 @@
                         @change="(e: Event) => (uploadedMarkScheme = (e.target as HTMLInputElement).files?.[0] || null)"
                     />
 
-                    <QuestionTextbox v-model="markGuidelines" :placeholder="'Marking guidelines...'" :rows="5" />
+                    <AppTextbox v-model="markGuidelines" :placeholder="'Marking guidelines...'" :rows="5" />
                 </div>
 
                 <div class="flex justify-end space-x-2 mt-4">

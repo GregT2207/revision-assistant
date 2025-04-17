@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import QuestionDropdown from '@/components/QuestionDropdown.vue';
+    import AppDropdown from '@/components/AppDropdown.vue';
     import examExtractor from '@/services/ExamExtractor';
     import Exam from '@/types/Exam';
     import { onMounted, ref, watch } from 'vue';
@@ -79,37 +79,38 @@
 </script>
 
 <template>
-    <div class="mx-auto p-16 container">
+    <div class="space-y-16 mx-auto p-16 container">
         <div class="gap-4 grid grid-cols-2">
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
                 <p>OpenAI API Key</p>
-                <input
-                    v-model="apiKey"
-                    type="password"
-                    class="bg-gray-700 px-3 py-2 border border-orange-500 focus:border-orange-500 rounded focus:outline-none w-full text-light-100 placeholder-orange-500"
-                    placeholder="sk-something"
-                />
+                <input v-model="apiKey" type="password" class="input" placeholder="sk-something" aria-label="input" />
             </div>
 
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-2">
                 <p>Model</p>
-                <QuestionDropdown v-model="model" :options="['gpt-4o', 'gpt-4o-mini', 'o1']" />
+                <AppDropdown v-model="model" :options="['gpt-4o', 'gpt-4o-mini', 'o1']">
+                    <small>
+                        <a href="https://platform.openai.com/docs/models" target="_blank" class="underline"
+                            >Read more about OpenAI models here</a
+                        >
+                    </small>
+                </AppDropdown>
             </div>
 
-            <div class="flex flex-col gap-4 col-span-2">
+            <div class="flex flex-col gap-2 col-span-2">
                 <p>Exam Paper</p>
                 <input
                     type="file"
-                    class="bg-gray-700 px-3 py-2 border border-red-500 focus:border-red-500 rounded focus:outline-none w-full text-light-100 placeholder-green-500"
+                    class="input"
                     accept=".pdf"
-                    placeholder="Upload PDF"
                     @change="(e: Event) => (uploadedExam = (e.target as HTMLInputElement).files?.[0] || null)"
+                    aria-label="file-input"
                 />
             </div>
 
             <div class="flex flex-col gap-4 col-span-2 mt-4">
                 <button
-                    class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-light-100 transition duration-200"
+                    class="btn btn-soft btn-secondary"
                     :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
                     :disabled="loading"
                     @click="storeNewExam"
@@ -117,20 +118,29 @@
                     {{ loading ? 'Extracting exam questions...' : 'Extract exam questions' }}
                 </button>
             </div>
+        </div>
 
-            <div class="flex flex-col gap-4 col-span-2 mt-32">
-                <router-link
-                    v-for="exam in getExams()"
-                    :key="exam.title"
-                    :to="{ name: exam.marked ? 'marking' : 'questions', params: { title: exam.title } }"
-                    class="px-4 py-2 rounded text-light-100 transition duration-200"
-                    :class="{
-                        'bg-red-500 hover:bg-red-600': exam.marked,
-                        'bg-blue-500 hover:bg-blue-600': !exam.marked,
-                    }"
-                >
-                    {{ exam.title }}
-                </router-link>
+        <div
+            class="card-group sm:flex *:not-last:border-e *:not-last:border-base-content/25 sm:max-w-full max-w-sm sm:max-h-128 overflow-x-auto"
+        >
+            <div v-for="exam in getExams()" :key="exam.title" class="min-w-64 card">
+                <div class="card-body">
+                    <h5 class="mb-2.5 card-title">{{ exam.title }}</h5>
+                    <p class="mb-4">{{ exam.description }}</p>
+
+                    <div class="card-actions">
+                        <router-link
+                            :to="{ name: exam.marked ? 'marking' : 'questions', params: { title: exam.title } }"
+                            class="btn btn-soft"
+                            :class="{
+                                'btn-success': exam.marked,
+                                'btn-info': !exam.marked,
+                            }"
+                        >
+                            {{ exam.marked ? 'View results' : 'Continue' }}
+                        </router-link>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

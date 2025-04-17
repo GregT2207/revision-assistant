@@ -2,10 +2,10 @@
     import QuestionKind from '@/enums/QuestionKind';
     import { ExamQuestion } from '@/types/Exam';
     import { shallowRef } from 'vue';
-    import QuestionCheckboxGroup from './QuestionCheckboxGroup.vue';
-    import QuestionDropdown from './QuestionDropdown.vue';
-    import QuestionRadioGroup from './QuestionRadioGroup.vue';
-    import QuestionTextbox from './QuestionTextbox.vue';
+    import AppCheckboxGroup from './AppCheckboxGroup.vue';
+    import AppDropdown from './AppDropdown.vue';
+    import AppRadioGroup from './AppRadioGroup.vue';
+    import AppTextbox from './AppTextbox.vue';
 
     const props = defineProps<{
         question: ExamQuestion;
@@ -15,10 +15,10 @@
 
     const kindsComponents = shallowRef(
         new Map<QuestionKind, unknown>([
-            [QuestionKind.Text, QuestionTextbox],
-            [QuestionKind.Checkbox, QuestionCheckboxGroup],
-            [QuestionKind.Radio, QuestionRadioGroup],
-            [QuestionKind.Dropdown, QuestionDropdown],
+            [QuestionKind.Text, AppTextbox],
+            [QuestionKind.Checkbox, AppCheckboxGroup],
+            [QuestionKind.Radio, AppRadioGroup],
+            [QuestionKind.Dropdown, AppDropdown],
         ]),
     );
 </script>

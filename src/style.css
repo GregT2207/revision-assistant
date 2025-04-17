@@ -1,4 +1,8 @@
 @import 'tailwindcss';
 @plugin "flyonui";
 @import 'flyonui/variants.css';
-@source "../node_modules/flyonui/flyonui.js";
+
+:root {
+    --color-primary: #0065ff;
+    --color-secondary: #ff5d00;
+}
