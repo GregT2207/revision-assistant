@@ -25,7 +25,7 @@
 
 <template>
     <div>
-        <h2>{{ question.text }}</h2>
+        <h2 v-html="question.text"></h2>
         <p class="mb-2 text-gray-400 text-xs">{{ question.maxMarks }} mark{{ question.maxMarks > 1 ? 's' : '' }}</p>
 
         <component
