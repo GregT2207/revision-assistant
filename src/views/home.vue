@@ -123,15 +123,15 @@
         <div
             class="card-group sm:flex *:not-last:border-e *:not-last:border-base-content/25 sm:max-w-full max-w-sm sm:max-h-128 overflow-x-auto"
         >
-            <div v-for="exam in getExams()" :key="exam.title" class="min-w-64 card">
+            <div v-for="exam in getExams()" :key="exam.title" class="min-w-80 card">
                 <div class="card-body">
-                    <h5 class="mb-2.5 card-title">{{ exam.title }}</h5>
-                    <p class="mb-4">{{ exam.description }}</p>
+                    <h2 class="mb-2 h-32 overflow-y-auto card-title">{{ exam.title }}</h2>
+                    <p class="mb-4 h-64 overflow-y-auto">{{ exam.description }}</p>
 
                     <div class="card-actions">
                         <router-link
                             :to="{ name: exam.marked ? 'marking' : 'questions', params: { title: exam.title } }"
-                            class="btn btn-soft"
+                            class="w-full btn btn-soft"
                             :class="{
                                 'btn-success': exam.marked,
                                 'btn-info': !exam.marked,
