@@ -6,7 +6,7 @@
 
 <template>
     <div class="flex space-x-4">
-        <div class="bg-base-100 p-8 rounded-lg w-full">
+        <div class="flex flex-col justify-center items-center bg-base-100 p-8 rounded-lg w-full">
             <h1 class="mb-2 font-bold text-2xl text-center">{{ exam.title }}</h1>
             <p class="text-gray-500 text-center">{{ exam.description }}</p>
         </div>

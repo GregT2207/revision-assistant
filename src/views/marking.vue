@@ -47,9 +47,11 @@
             <ExamDetails :exam="exam" />
 
             <div class="flex space-x-4 w=full">
-                <div class="bg-base-100 p-8 rounded-lg w-full">{{ exam.markingComments }}</div>
+                <div class="flex flex-col justify-center items-center bg-base-100 p-8 rounded-lg w-full">
+                    <p>{{ exam.markingComments }}</p>
+                </div>
 
-                <div class="flex flex-col items-center bg-base-100 p-8 rounded-lg w-full">
+                <div class="flex flex-col justify-center items-center bg-base-100 p-8 rounded-lg w-full">
                     <p
                         class="mb-4 text-3xl"
                         :class="{
