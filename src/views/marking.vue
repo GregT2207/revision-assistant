@@ -92,13 +92,18 @@
                         : ''
                 "
             >
-                <p><b>Question:</b> {{ question.text }}</p>
+                <p><b>Question:</b> <span v-html="question.text"></span></p>
+
                 <p v-if="question.options"><b>Options:</b> {{ question.options.join(', ') }}</p>
+
                 <p>
                     <b>Your answer:</b> <span class="italic">{{ question.answer }}</span>
                 </p>
+
                 <p v-if="question.correctAnswer"><b>Correct answer:</b> {{ question.correctAnswer }}</p>
+
                 <p><b>Marks:</b> {{ question.marksAwarded ?? 0 }} / {{ question.maxMarks }}</p>
+
                 <p v-if="question.markingComments">
                     <b>Comments:</b> <span class="italic">{{ question.markingComments }}</span>
                 </p>
