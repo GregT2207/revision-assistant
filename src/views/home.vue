@@ -9,6 +9,7 @@
     const router = useRouter();
     const apiKey = ref<string>('');
     const model = ref<string>('gpt-4o');
+    const timeElapsed = ref<number>(0);
     const uploadedExam = ref<File | null>(null);
     const loading = ref(false);
 
@@ -49,8 +50,10 @@
         }
 
         loading.value = true;
-
-        const exams = getExams();
+        timeElapsed.value = 0;
+        const interval = setInterval(() => {
+            timeElapsed.value += 1;
+        }, 1000);
 
         try {
             const encodedFile = await base64EncodeFile(uploadedExam.value);
@@ -58,8 +61,11 @@
         } catch (error: unknown) {
             console.error('Error storing file:', error);
             loading.value = false;
+            clearInterval(interval);
             return;
         }
+
+        const exams = getExams();
 
         try {
             const newExam = await examExtractor.extractExamQuestions(uploadedExam.value.name);
@@ -81,6 +87,7 @@
             console.error('Error storing exam:', error);
         } finally {
             loading.value = false;
+            clearInterval(interval);
         }
     };
 
@@ -125,7 +132,7 @@
                     :disabled="loading"
                     @click="storeNewExam"
                 >
-                    {{ loading ? 'Extracting exam questions...' : 'Extract exam questions' }}
+                    {{ loading ? `Extracting exam questions... (${timeElapsed}s elapsed)` : 'Extract exam questions' }}
                 </button>
             </div>
         </div>
