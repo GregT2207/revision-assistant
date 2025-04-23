@@ -8,7 +8,7 @@
     <div class="flex space-x-4">
         <div class="flex flex-col justify-center items-center bg-base-100 p-8 rounded-lg w-full">
             <h1 class="mb-2 font-bold text-2xl text-center">{{ exam.title }}</h1>
-            <p class="text-gray-500 text-center">{{ exam.description }}</p>
+            <p v-html="exam.description" class="text-gray-500 text-center"></p>
         </div>
 
         <div class="flex flex-col justify-center items-center space-y-4 bg-base-100 p-8 rounded-lg w-full">
