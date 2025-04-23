@@ -5,7 +5,7 @@ import Exam from '@/types/Exam';
 import llmService from './LlmService';
 
 class ExamExtractor {
-    async extractExamQuestions(file: File): Promise<Exam | null> {
+    async extractExamQuestions(fileName: string): Promise<Exam | null> {
         if (!extractExamDataPrompt || !extractExamDataPrompt.prompt) {
             console.error('Prompt for extracting exam data is not available.');
             return null;
@@ -16,10 +16,11 @@ class ExamExtractor {
             return null;
         }
 
-        const llmResponse = await llmService.sendUserMessage(extractExamDataPrompt.prompt, responseSchema, file);
+        const llmResponse = await llmService.sendUserMessage(extractExamDataPrompt.prompt, responseSchema, fileName);
         let exam: Exam;
         try {
             exam = JSON.parse(llmResponse);
+            exam.fileName = fileName;
             exam.marked = false;
             for (const question of exam.questions) {
                 question.answer = question.kind === QuestionKind.Checkbox ? [] : '';

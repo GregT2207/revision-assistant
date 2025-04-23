@@ -88,7 +88,7 @@ class LlmService {
         }
     }
 
-    public async sendUserMessage(message: string, schema: ResponseSchema, file?: File | null): Promise<string> {
+    public async sendUserMessage(message: string, schema: ResponseSchema, fileName?: string): Promise<string> {
         const contents: Content[] = [
             {
                 type: 'text',
@@ -96,30 +96,19 @@ class LlmService {
             },
         ];
 
-        if (file) {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = async () => {
-                const base64File = reader.result;
-                if (!base64File) {
-                    console.error('Error base64 encoding file.');
-                    return;
-                }
-
+        if (fileName) {
+            const file = localStorage.getItem(fileName);
+            if (file) {
                 contents.push({
                     type: 'file',
                     file: {
-                        filename: file.name,
-                        file_data: base64File.toString(),
+                        filename: fileName,
+                        file_data: file,
                     },
                 });
-            };
-
-            await new Promise((resolve) => {
-                reader.onloadend = () => {
-                    resolve(null);
-                };
-            });
+            } else {
+                console.error(`File ${fileName} not found, cannot attach to message.`);
+            }
         }
 
         return this.sendMessages(

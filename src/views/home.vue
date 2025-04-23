@@ -2,6 +2,7 @@
     import AppDropdown from '@/components/AppDropdown.vue';
     import examExtractor from '@/services/ExamExtractor';
     import Exam from '@/types/Exam';
+    import { base64EncodeFile } from '@/utils/file-utils';
     import { onMounted, ref, watch } from 'vue';
     import { useRouter } from 'vue-router';
 
@@ -52,7 +53,16 @@
         const exams = getExams();
 
         try {
-            const newExam = await examExtractor.extractExamQuestions(uploadedExam.value);
+            const encodedFile = await base64EncodeFile(uploadedExam.value);
+            localStorage.setItem(uploadedExam.value.name, encodedFile);
+        } catch (error: unknown) {
+            console.error('Error storing file:', error);
+            loading.value = false;
+            return;
+        }
+
+        try {
+            const newExam = await examExtractor.extractExamQuestions(uploadedExam.value.name);
             if (!newExam) {
                 throw new Error('Failed to extract questions from uploaded exam');
             }
@@ -68,7 +78,7 @@
             });
             return;
         } catch (error: unknown) {
-            console.error('Error storing new exam:', error);
+            console.error('Error storing exam:', error);
         } finally {
             loading.value = false;
         }

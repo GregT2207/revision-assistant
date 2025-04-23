@@ -1,6 +1,7 @@
 import QuestionKind from '@/enums/QuestionKind';
 
 interface Exam extends Markable {
+    fileName: string;
     title: string;
     description: string;
     maxDuration: number; // minutes
