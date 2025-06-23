@@ -34,7 +34,7 @@
         <component
             :is="kindsComponents.get(question.kind)"
             v-model="value"
-            :placeholder="question.kind === QuestionKind.Text ? 'Enter your answer...' : undefined"
+            placeholder="Enter your answer..."
             :rows="question.answerRows"
             :options="question.options"
         />
