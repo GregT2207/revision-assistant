@@ -24,9 +24,12 @@
 </script>
 
 <template>
-    <div>
-        <h2 v-html="question.text"></h2>
-        <p class="mb-2 text-gray-400 text-xs">{{ question.maxMarks }} mark{{ question.maxMarks > 1 ? 's' : '' }}</p>
+    <div class="mb-6">
+        <h2 class="mb-1 font-medium text-lg" v-html="question.text" />
+
+        <p class="mb-3 text-gray-500 dark:text-gray-400 text-sm">
+            {{ question.maxMarks }} mark{{ question.maxMarks > 1 ? 's' : '' }}
+        </p>
 
         <component
             :is="kindsComponents.get(question.kind)"
