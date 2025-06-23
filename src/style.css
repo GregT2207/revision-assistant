@@ -1,8 +1,26 @@
 @import 'tailwindcss';
-@plugin "flyonui";
+@plugin "flyonui" { themes: soft --default, dark --prefersdark, soft; }
 @import 'flyonui/variants.css';
 
 :root {
-    --color-primary: #0065ff;
-    --color-secondary: #ff5d00;
+  --root-bg: #f8fafc;
+  --color-primary: #0065ff;
+  --color-secondary: #ff5d00;
+  --color-accent: #cbe0ff;
+  --color-background: #f8fafc;
+  
 }
+
+:root[data-theme="soft"] {
+  --color-header: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --root-bg: #070c1a;
+  --color-background: #070c1a;
+  --color-base-100: #0f172a;
+  --color-base-200: #1e293b;
+  --color-base-content: #f8fafc;
+  --color-header: #1e293b;
+}
+
