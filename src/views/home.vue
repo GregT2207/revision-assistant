@@ -3,7 +3,7 @@
     import examExtractor from '@/services/ExamExtractor';
     import Exam from '@/types/Exam';
     import { base64EncodeFile } from '@/utils/file-utils';
-    import { onMounted, ref, watchEffect } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useRouter } from 'vue-router';
     import { Icon } from '@iconify/vue';
 
