@@ -3,9 +3,9 @@
     import examExtractor from '@/services/ExamExtractor';
     import Exam from '@/types/Exam';
     import { base64EncodeFile } from '@/utils/file-utils';
-    import { onMounted, ref } from 'vue';
-    import { useRouter } from 'vue-router';
     import { Icon } from '@iconify/vue';
+    import { onMounted, ref, watch } from 'vue';
+    import { useRouter } from 'vue-router';
 
     const router = useRouter();
     const apiKey = ref<string>('');
