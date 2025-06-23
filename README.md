@@ -18,10 +18,12 @@ Revision Assistant is a browser-only app written with Vue that uses an LLM (curr
 This tool could be expanded on in many ways, and contributions are always welcome! \
 Some urgently needed features include:
 
--   UI/UX overhaul - a proper layout and better design (ideally both dark and light mode), implemented in Tailwind
 -   Support for other LLMs
--   Logo, navbar, footer, etc.
 -   More consistent error messages and logging - these also need to be displayed to the user
 -   Option to generate new exam questions - this would require careful prompting and pessimistic usage, but could be
     extremely powerful
 -   Unit tests and manual testing
+
+### Contributors
+
+-   janidon2000
