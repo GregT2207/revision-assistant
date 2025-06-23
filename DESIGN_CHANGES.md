@@ -5,14 +5,15 @@ This document summarizes the UI/UX design changes and decisions made to enhance 
 ## Theme & Color System
 
 **What We Did:**
+
 - Reintroduced FlyonCSS for a cleaner design system with built-in light/dark themes.
 
 - Ensured all components use bg-base-100, text-base-content, and semantic utility classes (btn-primary, card, etc.) for consistency.
 
 - Implemented manual theme toggle (light/dark) using Vue with persistent state (localStorage) and 'document.documentElement.classList'.
 
-
 **Why:**
+
 - Keeps UI consistent across components.
 - Supports user preference and system default.
 - Uses soft whites and deep grays to reduce eye strain and improve contrast in both themes.
@@ -20,7 +21,8 @@ This document summarizes the UI/UX design changes and decisions made to enhance 
 ### Component Redesigns
 
 **Redesigned Components:**
-- AppDropdown: Styled with Tailwind + Flyon classes, added accessibility (aria-*) and fixed layout/background issues.
+
+- AppDropdown: Styled with Tailwind + Flyon classes, added accessibility (aria-\*) and fixed layout/background issues.
 
 - File Upload (PDF): Added a drag-and-drop area with a file icon, dashed border, and centered CTA button.
 
@@ -61,9 +63,10 @@ This document summarizes the UI/UX design changes and decisions made to enhance 
 - Integrate backend/API and handle post-submission flows.
 
 ###### Credits
+
 - Crafted with care by Deep Jani — UI/UX Designer & Front-End Developer.
 
-- If you appreciated the clean design, thoughtful layout, and smooth interactions — don’t forget to give credit where it’s due! 
+- If you appreciated the clean design, thoughtful layout, and smooth interactions — don’t forget to give credit where it’s due!
 
 I specialize in building user-friendly, scalable, and visually polished interfaces.
 Looking to collaborate on a serious product or need a seasoned designer-dev hybrid on your team?
