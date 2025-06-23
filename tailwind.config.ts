@@ -1,3 +1,5 @@
+import iconify from '@iconify/tailwind';
+import flyonui from 'flyonui';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -17,10 +19,7 @@ const config: Config = {
             },
         },
     },
-    plugins: [
-        require('flyonui'),
-        require('@iconify/tailwind'), // if you're using iconify plugin
-    ],
+    plugins: [flyonui, iconify],
 };
 
 export default config;
