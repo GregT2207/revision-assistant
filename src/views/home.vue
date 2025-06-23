@@ -8,26 +8,40 @@
     import { Icon } from '@iconify/vue';
 
     const router = useRouter();
-    const apiKey = ref('');
-    const model = ref('gpt-4o');
+    const apiKey = ref<string>('');
+    const model = ref<string>('gpt-4o');
+    const timeElapsed = ref<number>(0);
     const uploadedExam = ref<File | null>(null);
     const loading = ref(false);
-    const timeElapsed = ref(0);
 
     onMounted(() => {
-        apiKey.value = localStorage.getItem('llm_api_key') || '';
-        model.value = localStorage.getItem('llm_model') || 'gpt-4o';
+        if (localStorage.getItem('llm_api_key')) {
+            apiKey.value = localStorage.getItem('llm_api_key') as string;
+        }
+
+        if (localStorage.getItem('llm_model')) {
+            model.value = localStorage.getItem('llm_model') as string;
+        } else {
+            setModel();
+        }
     });
 
-    watchEffect(() => localStorage.setItem('llm_api_key', apiKey.value));
-    watchEffect(() => localStorage.setItem('llm_model', model.value));
+    const setApiKey = () => {
+        localStorage.setItem('llm_api_key', apiKey.value);
+    };
 
-    const getExams = (): Exam[] => {
+    const setModel = () => {
+        localStorage.setItem('llm_model', model.value);
+    };
+
+    const getExams = () => {
+        let exams: Exam[];
         try {
-            return JSON.parse(localStorage.getItem('exams') || '[]');
-        } catch {
-            return [];
+            exams = JSON.parse(localStorage.getItem('exams') as string) || [];
+        } catch (error: unknown) {
+            exams = [];
         }
+        return exams;
     };
 
     const storeNewExam = async () => {
@@ -38,42 +52,63 @@
 
         loading.value = true;
         timeElapsed.value = 0;
-        const interval = setInterval(() => (timeElapsed.value += 1), 1000);
+        const interval = setInterval(() => {
+            timeElapsed.value += 1;
+        }, 1000);
 
         try {
             const encodedFile = await base64EncodeFile(uploadedExam.value);
             localStorage.setItem(uploadedExam.value.name, encodedFile);
+        } catch (error: unknown) {
+            console.error('Error storing file:', error);
+            loading.value = false;
+            clearInterval(interval);
+            return;
+        }
 
+        const exams = getExams();
+
+        try {
             const newExam = await examExtractor.extractExamQuestions(uploadedExam.value.name);
-            if (!newExam) throw new Error('Extraction failed');
+            if (!newExam) {
+                throw new Error('Failed to extract questions from uploaded exam');
+            }
 
-            const exams = getExams();
             exams.push(newExam);
             localStorage.setItem('exams', JSON.stringify(exams));
 
-            router.push({ name: 'questions', params: { title: newExam.title } });
-        } catch (err) {
-            console.error('Failed to store exam:', err);
+            await router.push({
+                name: 'questions',
+                params: {
+                    title: newExam.title,
+                },
+            });
+            return;
+        } catch (error: unknown) {
+            console.error('Error storing exam:', error);
         } finally {
             loading.value = false;
             clearInterval(interval);
         }
     };
+
+    watch(apiKey, () => setApiKey());
+    watch(model, () => setModel());
 </script>
 
 <template>
-    <div class="space-y-16 mx-auto p-4 sm:px-8 sm:py-16 container max-w-7xl">
+    <div class="space-y-16 mx-auto p-4 sm:px-8 sm:py-16 max-w-7xl container">
         <div class="card">
             <div class="card-body">
                 <!-- Input Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="gap-6 grid grid-cols-1 sm:grid-cols-2">
                     <div class="flex flex-col gap-2">
                         <label class="font-medium" for="api-key">Enter Your OpenAI API Key</label>
                         <input
                             id="api-key"
                             v-model="apiKey"
                             type="password"
-                            class="input w-full px-4 py-5 border border-gray-300 rounded-md shadow-sm bg-base-100 text-base-content placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+                            class="bg-base-100 shadow-sm px-4 py-5 border border-gray-300 focus:border-primary rounded-md focus:outline-none focus:ring-2 focus:ring-primary w-full text-base-content transition input placeholder-gray-400"
                             placeholder="sk-..."
                             aria-label="OpenAI API Key"
                         />
@@ -100,18 +135,18 @@
 
                         <label
                             for="exam-upload"
-                            class="flex flex-col items-center justify-center gap-3 px-3 sm:px-6 py-5 sm:py-10 border-2 border-dashed border-gray-300 rounded-md cursor-pointer bg-base-100 text-center hover:bg-base-200 transition"
+                            class="flex flex-col justify-center items-center gap-3 bg-base-100 hover:bg-base-200 px-3 sm:px-6 py-5 sm:py-10 border-2 border-gray-300 border-dashed rounded-md text-center transition cursor-pointer"
                         >
                             <!-- File Icon -->
                             <Icon icon="mdi:file-pdf-box" class="w-20 h-20 text-red-500" />
 
                             <!-- Drag & Drop Text -->
-                            <p class="text-lg font-semibold">Drag and drop a file here</p>
-                            <p class="text-md text-gray-500 dark:text-gray-400">PDF only, max 10MB</p>
+                            <p class="font-semibold text-lg">Drag and drop a file here</p>
+                            <p class="text-gray-500 text-md dark:text-gray-400">PDF only, max 10MB</p>
 
                             <!-- Button -->
                             <div class="mt-2">
-                                <span class="btn btn-lg px-8 sm:px-16 py-4 sm:py-8 btn-soft btn-primary"
+                                <span class="px-8 sm:px-16 py-4 sm:py-8 btn btn-lg btn-soft btn-primary"
                                     >Select a file</span
                                 >
                             </div>
@@ -127,9 +162,9 @@
                         />
                     </div>
 
-                    <div class="sm:col-span-2 flex justify-center">
+                    <div class="flex justify-center sm:col-span-2">
                         <button
-                            class="btn btn-secondary px-16 py-6"
+                            class="px-16 py-6 btn btn-secondary"
                             :disabled="loading"
                             :class="loading ? 'opacity-50 cursor-not-allowed' : ''"
                             @click="storeNewExam"
@@ -147,14 +182,14 @@
         >
             <div v-for="exam in getExams()" :key="exam.title" class="min-w-80 max-w-xs card">
                 <div class="card-body">
-                    <h2 class="card-title text-lg h-24 overflow-y-auto mb-2">{{ exam.title }}</h2>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 h-40 overflow-y-auto mb-4">
+                    <h2 class="mb-2 h-24 overflow-y-auto text-lg card-title">{{ exam.title }}</h2>
+                    <p class="mb-4 h-40 overflow-y-auto text-gray-600 dark:text-gray-400 text-sm">
                         {{ exam.description }}
                     </p>
                     <div class="card-actions">
                         <router-link
                             :to="{ name: exam.marked ? 'marking' : 'questions', params: { title: exam.title } }"
-                            class="btn btn-soft w-full"
+                            class="w-full btn btn-soft"
                             :class="exam.marked ? 'btn-success' : 'btn-info'"
                         >
                             {{ exam.marked ? 'View Results' : 'Continue' }}
